@@ -1,5 +1,11 @@
-// A fake Anthropic client for tests and `npm run dev -- --mock`.
-// It answers with the fixtures in tests/fixtures, shaped like a real Messages API response.
+// tests/mock-client.js
+// A fake Anthropic client for the tests and for `npm run dev -- --mock`.
+// It answers with the saved example answers in tests/fixtures, shaped like a real API response,
+// so you can click through the app without an API key. The fixtures are ONLY used here:
+// the real app always gets its pieces and outfits from Claude.
+//
+//   delayMs:   pretend the AI takes this long (so loading screens show)
+//   responses: a list of answers to return in order (tests use this to simulate bad answers)
 import { readFileSync } from "node:fs";
 
 const fixture = (name) => readFileSync(new URL(`./fixtures/${name}.json`, import.meta.url), "utf8");

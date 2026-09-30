@@ -1,17 +1,27 @@
+// api/inventory.js  →  POST /api/inventory
+// Step 1 of the app: turns wardrobe photos into a list of pieces.
+//
+// Request:  { images: [{ media_type: "image/jpeg", data: "<base64>" }, ...] }  (1 to 10 photos)
+// Response: { items: [{ id, name, type, color, pattern, description, formality,
+//                       visibility, seen_in, possible_duplicate_of }, ...] }
+//
+// On Vercel, every file in /api becomes an endpoint, and its default export handles the request.
+
 import { askForJson, loadPrompt, ModelError } from "../lib/claude.js";
 import { checkPasscode, readJsonPost, sendError } from "../lib/http.js";
 import { inventorySchema } from "../lib/schemas.js";
 import { normalizeInventory } from "../lib/wardrobe.js";
 
 const MAX_PHOTOS = 10;
-const MEDIA_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"];
+const MEDIA_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"]; // what Claude accepts
 const BASE64_RE = /^[A-Za-z0-9+/]+={0,2}$/;
 
-// POST { images: [{ media_type, data }] } → { items }
 export default async function handler(req, res) {
+  // 1. Only POST, only with the right passcode.
   const body = readJsonPost(req, res);
   if (!body || !checkPasscode(req, res)) return;
 
+  // 2. Validate the photos before spending money on an AI call.
   const images = body.images;
   if (!Array.isArray(images) || images.length === 0) {
     return sendError(res, 400, "Add at least one photo.");
@@ -25,6 +35,8 @@ export default async function handler(req, res) {
     }
   }
 
+  // 3. Build the message: each photo is preceded by a "Photo N" label, so the AI can
+  //    refer to looks as "p1_l3" (photo 1, look 3). The instructions are in prompts/inventory.md.
   const content = images.flatMap((image, index) => [
     { type: "text", text: `Photo ${index + 1}` },
     { type: "image", source: { type: "base64", media_type: image.media_type, data: image.data } },
@@ -34,6 +46,7 @@ export default async function handler(req, res) {
     text: `Catalog every garment in ${images.length === 1 ? "this photo" : `these ${images.length} photos`}.`,
   });
 
+  // 4. Ask Claude, clean up its answer, and send the pieces back to the browser.
   try {
     const result = await askForJson({ system: loadPrompt("inventory"), content, schema: inventorySchema });
     const items = normalizeInventory(result.items, images.length);

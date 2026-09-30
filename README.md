@@ -36,21 +36,26 @@ Quiz answers ──────────────────────�
 | AI       | Claude Sonnet 5.5 (vision + structured JSON output) |
 | Hosting  | Vercel Hobby (free)                                |
 
-## Run it locally
+## Run it locally (VS Code)
 
-**You need:** Node.js 20 or newer, and an Anthropic API key from [platform.claude.com](https://platform.claude.com).
+**You need:** Node.js 20.12 or newer. For real AI answers you also need an Anthropic API key from [platform.claude.com](https://platform.claude.com).
 
-```bash
-git clone https://github.com/DinikaKC/OutfitRecco.git
-cd OutfitRecco
-npm install
-cp .env.example .env   # then fill in ANTHROPIC_API_KEY and APP_PASSCODE
-npm run dev
-```
-
-Open http://localhost:3000 and enter your passcode.
-
-**Try it without an API key:** `npm run dev -- --mock` uses canned answers from `tests/fixtures`, so you can click through the whole app for free. The passcode is `test`.
+1. Open the project folder in VS Code, then open a terminal with **Terminal → New Terminal**.
+2. Install the dependencies (once, and again whenever `package.json` changes):
+   ```bash
+   npm install
+   ```
+   This creates the `node_modules` folder. It isn't in the repo, so skipping this step gives `Cannot find package '@anthropic-ai/sdk'`.
+3. Try the app for free with canned answers:
+   ```bash
+   npm run dev -- --mock
+   ```
+   Open http://localhost:3000. The passcode is `test`. Stop the server with **Ctrl+C**.
+4. For real answers, create your `.env` file and fill in both values:
+   ```bash
+   cp .env.example .env
+   ```
+   Then run `npm run dev` (without `--mock`) and use the passcode you chose.
 
 ## Deploy to Vercel
 
@@ -90,6 +95,18 @@ The Hobby plan is free for personal, non-commercial use. Functions can run for u
 ├── scripts/dev-server.js # Local server that mimics Vercel
 └── tests/                # node --test
 ```
+
+## Settings you can change
+
+| What | Where |
+|------|-------|
+| Quiz questions and answers | `public/quiz-options.js` |
+| What the AI is told to do | `prompts/inventory.md`, `prompts/recommend.md` |
+| Model, effort, `max_tokens`, timeouts | top of `lib/claude.js` (the model can also be set with `ANTHROPIC_MODEL` in `.env`) |
+| Photo limits and upload size | top of `public/app.js` and `api/inventory.js` |
+| API key and passcode | `.env` locally, Vercel's environment variables when deployed |
+
+Nothing about your wardrobe is hard-coded. The files in `tests/fixtures` are saved example answers used only by the tests and `--mock` mode.
 
 ## Tweaking the prompts
 

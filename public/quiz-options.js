@@ -1,5 +1,12 @@
-// Quiz questions and allowed answers.
-// Shared by the browser (to render the quiz) and the API (to validate answers).
+// public/quiz-options.js
+// The quiz questions and their allowed answers. Edit this file to change the quiz.
+// It's shared by the browser (app.js renders the questions from it) and the API
+// (api/recommend.js rejects any answer that isn't listed here).
+//
+//   key:      the name the answer is sent under
+//   question: the heading shown on screen
+//   value:    what the AI receives (keep it plain English)
+//   label:    what the button shows
 
 export const QUIZ = [
   {

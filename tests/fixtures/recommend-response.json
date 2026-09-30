@@ -1,0 +1,40 @@
+{
+  "from_wardrobe": [
+    {
+      "name": "Breezy folk sundress",
+      "items": { "top": null, "bottom": null, "one_piece": "i16", "layer": null },
+      "why": "The strappy sundress lets air through in the humidity, and the folk floral print suits a playful afternoon.",
+      "styling_tip": "Add a woven tote and tie your hair up to keep cool."
+    },
+    {
+      "name": "Olive and cream utility",
+      "items": { "top": "i11", "bottom": "i22", "one_piece": null, "layer": null },
+      "why": "The loose cream cargos let air move, and the fitted olive polo balances their volume.",
+      "styling_tip": "Tuck the polo in fully so the cargos' waist shows."
+    },
+    {
+      "name": "Lilac and denim",
+      "items": { "top": "i13", "bottom": "i14", "one_piece": null, "layer": "i15" },
+      "why": "Lilac against mid-blue denim looks light and fun, and the sheer shrug adds colour without heat.",
+      "styling_tip": "Let the shrug hang open and roll its sleeves once."
+    }
+  ],
+  "worth_looking_for": [
+    {
+      "piece": "Coral camp-collar shirt",
+      "description": "Boxy short-sleeve camp-collar shirt in breathable linen-cotton with a coral abstract print.",
+      "search_query": "coral print camp collar linen shirt",
+      "pair_with": ["i13", "i14"],
+      "closest_owned": "i3",
+      "why": "A short-sleeve layer you can wear open over the Lilac crop top when the Light blue embroidered shirt is too warm."
+    },
+    {
+      "piece": "Terracotta tiered midi skirt",
+      "description": "Flowy tiered midi skirt in terracotta cotton voile with an elastic waist.",
+      "search_query": "terracotta tiered midi skirt cotton",
+      "pair_with": ["i21", "i13"],
+      "closest_owned": "i16",
+      "why": "It turns your sleeveless tops into several more hot-weather outfits."
+    }
+  ]
+}

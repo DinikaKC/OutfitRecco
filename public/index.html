@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OutfitRecco</title>
+  <meta name="description" content="Upload photos of your wardrobe, answer five quick questions, and get outfits built from clothes you already own.">
+  <meta name="theme-color" content="#1f2a5a">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Rozha+One&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <p class="wordmark">OutfitRecco</p>
+    <nav class="steps" aria-label="Progress" hidden>
+      <ol>
+        <li data-step="photos">Photos</li>
+        <li data-step="quiz">Quiz</li>
+        <li data-step="pieces">Pieces</li>
+        <li data-step="results">Outfits</li>
+      </ol>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Passcode -->
+    <section id="gate" class="screen narrow" hidden>
+      <h1>Outfits from your own wardrobe</h1>
+      <p class="lede">Enter the passcode to start.</p>
+      <form id="gate-form" class="gate-form">
+        <label for="passcode">Passcode</label>
+        <input id="passcode" name="passcode" type="password" autocomplete="current-password" required>
+        <p class="error" id="gate-error" role="alert" hidden></p>
+        <button class="btn primary" type="submit">Unlock</button>
+      </form>
+    </section>
+
+    <!-- Photos -->
+    <section id="photos" class="screen narrow" hidden>
+      <h1>What's in your wardrobe?</h1>
+      <p class="lede">Add photos of the clothes you want to choose from: a collage, outfit photos or flat-lays. Up to 10.</p>
+
+      <label class="dropzone" id="dropzone">
+        <input id="file-input" type="file" accept="image/jpeg,image/png,image/webp,image/gif" multiple>
+        <span class="dropzone-title">Choose photos</span>
+        <span class="dropzone-hint">or drop them here</span>
+      </label>
+
+      <ul class="thumbs" id="thumbs" aria-label="Selected photos"></ul>
+      <p class="error" id="photos-error" role="alert" hidden></p>
+
+      <details class="tips">
+        <summary>Tips for better results</summary>
+        <ul>
+          <li>Separate photos beat one big collage. A collage gets shrunk, so fine prints blur.</li>
+          <li>Make sure every piece is visible. A top under a jacket is easy to miss.</li>
+          <li>Plain backgrounds and daylight help.</li>
+        </ul>
+      </details>
+
+      <div class="actions">
+        <button class="btn primary" id="photos-next" type="button" disabled>Continue to quiz</button>
+      </div>
+    </section>
+
+    <!-- Quiz -->
+    <section id="quiz" class="screen narrow" hidden>
+      <p class="quiz-count" id="quiz-count"></p>
+      <h1 id="quiz-question"></h1>
+      <div class="options" id="quiz-options" role="group" aria-labelledby="quiz-question"></div>
+      <div class="actions split">
+        <button class="btn link" id="quiz-back" type="button">Back</button>
+      </div>
+    </section>
+
+    <!-- Pieces -->
+    <section id="pieces" class="screen narrow" hidden>
+      <h1>Your pieces</h1>
+      <div id="pieces-loading" class="loading" hidden>
+        <span class="spinner" aria-hidden="true"></span>
+        <p>Reading your photos. This takes up to a minute.</p>
+      </div>
+      <div id="pieces-error" class="error-panel" hidden>
+        <p class="error" role="alert"></p>
+        <button class="btn" id="pieces-retry" type="button">Try again</button>
+      </div>
+      <div id="pieces-ready" hidden>
+        <p class="lede">Untick anything you don't want to wear, and fix any piece the AI got wrong.</p>
+        <div id="piece-groups"></div>
+
+        <details class="add-piece" id="add-piece">
+          <summary>Add a missing piece</summary>
+          <form id="add-form" class="add-form">
+            <label for="add-name">Name</label>
+            <input id="add-name" type="text" maxlength="80" placeholder="e.g. White linen shirt" required>
+            <label for="add-type">Type</label>
+            <select id="add-type"></select>
+            <button class="btn" type="submit">Add piece</button>
+          </form>
+        </details>
+
+        <p class="error" id="recommend-error" role="alert" hidden></p>
+        <div class="actions">
+          <button class="btn primary" id="get-outfits" type="button">Get outfits</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Results -->
+    <section id="results" class="screen wide" hidden>
+      <div id="results-loading" class="loading narrow-block" hidden>
+        <span class="spinner" aria-hidden="true"></span>
+        <p>Picking outfits…</p>
+      </div>
+      <div id="results-ready" hidden>
+        <div class="results-head">
+          <h1 id="results-title"></h1>
+          <p class="lede" id="results-summary"></p>
+        </div>
+
+        <h2>From your wardrobe</h2>
+        <div class="tags" id="outfits"></div>
+
+        <h2>Worth looking for</h2>
+        <p class="section-note">Pieces you may not own yet. Check your wardrobe for something similar.</p>
+        <div class="ideas" id="ideas"></div>
+
+        <div class="actions results-actions">
+          <button class="btn primary" id="change-answers" type="button">Change answers</button>
+          <button class="btn" id="edit-pieces" type="button">Edit pieces</button>
+          <button class="btn link" id="start-over" type="button">Start over</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <p class="visually-hidden" id="announcer" aria-live="polite"></p>
+</body>
+</html>

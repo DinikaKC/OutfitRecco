@@ -1,7 +1,7 @@
 // api/inventory.js  →  POST /api/inventory
 // Step 1 of the app: turns wardrobe photos into a list of pieces.
 //
-// Request:  { images: [{ media_type: "image/jpeg", data: "<base64>" }, ...] }  (1 to 10 photos)
+// Request:  { images: [{ media_type: "image/jpeg", data: "<base64>" }, ...] }  (1 to 15 photos)
 // Response: { items: [{ id, name, type, color, pattern, description, formality,
 //                       visibility, seen_in, possible_duplicate_of }, ...] }
 //
@@ -12,7 +12,7 @@ import { checkPasscode, readJsonPost, sendError } from "../lib/http.js";
 import { inventorySchema } from "../lib/schemas.js";
 import { normalizeInventory } from "../lib/wardrobe.js";
 
-const MAX_PHOTOS = 10;
+const MAX_PHOTOS = 15;
 const MEDIA_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"]; // what Claude accepts
 const BASE64_RE = /^[A-Za-z0-9+/]+={0,2}$/;
 

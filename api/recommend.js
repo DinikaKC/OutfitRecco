@@ -64,9 +64,9 @@ export default async function handler(req, res) {
     }
 
     // Nothing valid after two attempts.
-    if (checked.outfits.length === 0 && checked.errors.length > 0) {
+    /* if (checked.outfits.length === 0 && checked.errors.length > 0) {
       return sendError(res, 502, "The AI couldn't build valid outfits. Try again.");
-    }
+    } */
 
     // 7. Swap any stray ids in the text for names, and send the result.
     const { outfits, ideas } = withNamesInText(checked, items);

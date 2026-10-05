@@ -2,7 +2,7 @@
 // Step 2 of the app: picks outfits from the user's pieces for their quiz answers.
 //
 // Request:  { quiz: { occasion, mood, weather, time, priority }, items: [ pieces after the user's edits ] }
-// Response: { outfits: [...], ideas: [...], items: [ the merged pieces, for showing names ] }
+// Response: { outfits: [...], ideas: [...], items: [ the merged pieces, for showing names ], skipped: number }
 //
 // Flow: validate → merge duplicates → ask Claude → check the answer in code
 //       → if broken, ask once more listing the problems → send the valid outfits back.
@@ -69,8 +69,10 @@ export default async function handler(req, res) {
     } */
 
     // 7. Swap any stray ids in the text for names, and send the result.
+    //    `skipped` counts outfits dropped for breaking the rules, so the app can tell
+    //    "the AI's outfits were invalid" apart from "nothing in your wardrobe fits".
     const { outfits, ideas } = withNamesInText(checked, items);
-    return res.status(200).json({ outfits, ideas, items });
+    return res.status(200).json({ outfits, ideas, items, skipped: checked.errors.length });
   } catch (err) {
     if (err instanceof ModelError) return sendError(res, err.status, err.message);
     console.error(err);

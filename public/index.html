@@ -26,6 +26,11 @@
     </nav>
   </header>
 
+  <p class="demo-banner" id="demo-banner" role="status" hidden>
+    <strong>Demo mode.</strong> The pieces and outfits are sample answers, not read from your photos.
+    To use the AI, stop the server and run <code>npm run dev</code> without <code>--mock</code>.
+  </p>
+
   <main>
     <!-- Passcode -->
     <section id="gate" class="screen narrow" hidden>
@@ -42,21 +47,27 @@
     <!-- Photos -->
     <section id="photos" class="screen narrow" hidden>
       <h1>What's in your wardrobe?</h1>
-      <p class="lede">Add photos of the clothes you want to choose from: a collage, outfit photos or flat-lays. Up to 10.</p>
+      <p class="lede">Add photos of the clothes you want to choose from: a collage, outfit photos, flat-lays, or a PDF or Word file with pictures in it. Up to <span id="picture-limit">30</span> pictures.</p>
 
       <label class="dropzone" id="dropzone">
-        <input id="file-input" type="file" accept="image/jpeg,image/png,image/webp,image/gif" multiple>
-        <span class="dropzone-title">Choose photos</span>
+        <input id="file-input" type="file" multiple>
+        <span class="dropzone-title">Choose photos or files</span>
         <span class="dropzone-hint">or drop them here</span>
+        <span class="dropzone-formats">JPEG, PNG, WebP, PDF or Word (.docx)</span>
       </label>
 
-      <ul class="thumbs" id="thumbs" aria-label="Selected photos"></ul>
+      <p class="loading small" id="photos-status" role="status" hidden>
+        <span class="spinner" aria-hidden="true"></span>
+        Reading your files…
+      </p>
+      <ul class="thumbs" id="thumbs" aria-label="Selected pictures"></ul>
       <p class="error" id="photos-error" role="alert" hidden></p>
 
       <details class="tips">
         <summary>Tips for better results</summary>
         <ul>
           <li>Separate photos beat one big collage. A collage gets shrunk, so fine prints blur.</li>
+          <li>A Word file with one picture per look works well: each picture is read on its own. A PDF is read page by page, like a collage.</li>
           <li>Make sure every piece is visible. A top under a jacket is easy to miss.</li>
           <li>Plain backgrounds and daylight help.</li>
         </ul>
@@ -82,7 +93,7 @@
       <h1>Your pieces</h1>
       <div id="pieces-loading" class="loading" hidden>
         <span class="spinner" aria-hidden="true"></span>
-        <p>Reading your photos. This takes up to a minute.</p>
+        <p>Reading your photos. With many pictures this can take a couple of minutes.</p>
       </div>
       <div id="pieces-error" class="error-panel" hidden>
         <p class="error" role="alert"></p>

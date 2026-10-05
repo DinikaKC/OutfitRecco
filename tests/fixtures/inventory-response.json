@@ -9,7 +9,9 @@
       "description": "Black saree with gold metallic print, draped with pleated pallu",
       "visibility": "full",
       "formality": 5,
-      "seen_in": ["p1_l1"],
+      "seen_in": [
+        "p1_l1"
+      ],
       "possible_duplicate_of": null
     },
     {
@@ -21,7 +23,9 @@
       "description": "Sleeveless blouse worn under the saree, mostly covered by the pallu",
       "visibility": "partial",
       "formality": 5,
-      "seen_in": ["p1_l1"],
+      "seen_in": [
+        "p1_l1"
+      ],
       "possible_duplicate_of": null
     },
     {
@@ -33,7 +37,9 @@
       "description": "Long-sleeve button shirt with colorful floral embroidery, worn open over a top",
       "visibility": "full",
       "formality": 2,
-      "seen_in": ["p1_l2"],
+      "seen_in": [
+        "p1_l2"
+      ],
       "possible_duplicate_of": null
     },
     {
@@ -45,7 +51,9 @@
       "description": "Fitted black tee worn under the open shirt",
       "visibility": "partial",
       "formality": 2,
-      "seen_in": ["p1_l2"],
+      "seen_in": [
+        "p1_l2"
+      ],
       "possible_duplicate_of": null
     },
     {
@@ -57,7 +65,9 @@
       "description": "Black skinny-fit jeans, full length",
       "visibility": "full",
       "formality": 2,
-      "seen_in": ["p1_l2"],
+      "seen_in": [
+        "p1_l2"
+      ],
       "possible_duplicate_of": null
     },
     {
@@ -69,7 +79,9 @@
       "description": "Fitted long-sleeve crew-neck tee with thin stripes",
       "visibility": "full",
       "formality": 2,
-      "seen_in": ["p1_l3"],
+      "seen_in": [
+        "p1_l3"
+      ],
       "possible_duplicate_of": null
     },
     {
@@ -81,7 +93,9 @@
       "description": "Black slim-fit jeans",
       "visibility": "full",
       "formality": 2,
-      "seen_in": ["p1_l3"],
+      "seen_in": [
+        "p1_l3"
+      ],
       "possible_duplicate_of": "i5"
     },
     {
@@ -93,7 +107,9 @@
       "description": "Long-sleeve V-neck midi dress with ruched wrap front, fitted silhouette",
       "visibility": "full",
       "formality": 3,
-      "seen_in": ["p1_l4"],
+      "seen_in": [
+        "p1_l4"
+      ],
       "possible_duplicate_of": null
     },
     {
@@ -105,7 +121,9 @@
       "description": "Sleeveless short kurti with band collar and front placket",
       "visibility": "full",
       "formality": 3,
-      "seen_in": ["p1_l5"],
+      "seen_in": [
+        "p1_l5"
+      ],
       "possible_duplicate_of": null
     },
     {
@@ -117,7 +135,9 @@
       "description": "Full-length white leggings",
       "visibility": "full",
       "formality": 2,
-      "seen_in": ["p1_l5"],
+      "seen_in": [
+        "p1_l5"
+      ],
       "possible_duplicate_of": null
     },
     {
@@ -129,7 +149,9 @@
       "description": "Fitted sleeveless knit top with polo collar",
       "visibility": "full",
       "formality": 2,
-      "seen_in": ["p1_l6"],
+      "seen_in": [
+        "p1_l6"
+      ],
       "possible_duplicate_of": null
     },
     {
@@ -141,7 +163,9 @@
       "description": "High-waisted wide-leg jeans, photo cropped at thigh",
       "visibility": "partial",
       "formality": 2,
-      "seen_in": ["p1_l6"],
+      "seen_in": [
+        "p1_l6"
+      ],
       "possible_duplicate_of": null
     },
     {
@@ -153,7 +177,9 @@
       "description": "Sleeveless scoop-neck crop top",
       "visibility": "full",
       "formality": 2,
-      "seen_in": ["p1_l7"],
+      "seen_in": [
+        "p1_l7"
+      ],
       "possible_duplicate_of": null
     },
     {
@@ -165,7 +191,9 @@
       "description": "High-waisted denim shorts with frayed hem",
       "visibility": "full",
       "formality": 2,
-      "seen_in": ["p1_l7"],
+      "seen_in": [
+        "p1_l7"
+      ],
       "possible_duplicate_of": null
     },
     {
@@ -177,7 +205,9 @@
       "description": "Sheer long-sleeve open kimono-style shrug, knee length",
       "visibility": "full",
       "formality": 2,
-      "seen_in": ["p1_l7"],
+      "seen_in": [
+        "p1_l7"
+      ],
       "possible_duplicate_of": null
     },
     {
@@ -189,7 +219,9 @@
       "description": "Strappy midi sundress with twisted sweetheart bust and ruffled tiered hem",
       "visibility": "full",
       "formality": 3,
-      "seen_in": ["p1_l8"],
+      "seen_in": [
+        "p1_l8"
+      ],
       "possible_duplicate_of": null
     },
     {
@@ -201,7 +233,9 @@
       "description": "Unstructured long-sleeve open-front blazer",
       "visibility": "full",
       "formality": 3,
-      "seen_in": ["p1_l9"],
+      "seen_in": [
+        "p1_l9"
+      ],
       "possible_duplicate_of": null
     },
     {
@@ -213,7 +247,9 @@
       "description": "Black V-neck top worn under the blazer",
       "visibility": "partial",
       "formality": 2,
-      "seen_in": ["p1_l9"],
+      "seen_in": [
+        "p1_l9"
+      ],
       "possible_duplicate_of": "i4"
     },
     {
@@ -225,7 +261,9 @@
       "description": "Dark skinny jeans, slightly faded",
       "visibility": "full",
       "formality": 2,
-      "seen_in": ["p1_l9"],
+      "seen_in": [
+        "p1_l9"
+      ],
       "possible_duplicate_of": "i5"
     },
     {
@@ -237,7 +275,9 @@
       "description": "Matching long-sleeve button shirt and straight trousers worn as a set",
       "visibility": "full",
       "formality": 3,
-      "seen_in": ["p1_l10"],
+      "seen_in": [
+        "p1_l10"
+      ],
       "possible_duplicate_of": null
     },
     {
@@ -249,7 +289,9 @@
       "description": "Fitted sleeveless knit top with polo collar",
       "visibility": "full",
       "formality": 2,
-      "seen_in": ["p1_l11"],
+      "seen_in": [
+        "p1_l11"
+      ],
       "possible_duplicate_of": "i11"
     },
     {
@@ -261,8 +303,111 @@
       "description": "Baggy parachute-style cargo pants with side pockets",
       "visibility": "full",
       "formality": 2,
-      "seen_in": ["p1_l11"],
+      "seen_in": [
+        "p1_l11"
+      ],
       "possible_duplicate_of": null
+    }
+  ],
+  "looks": [
+    {
+      "id": "p1_l1",
+      "box": {
+        "x1": 74,
+        "y1": 119,
+        "x2": 230,
+        "y2": 513
+      }
+    },
+    {
+      "id": "p1_l2",
+      "box": {
+        "x1": 270,
+        "y1": 109,
+        "x2": 394,
+        "y2": 556
+      }
+    },
+    {
+      "id": "p1_l3",
+      "box": {
+        "x1": 468,
+        "y1": 111,
+        "x2": 596,
+        "y2": 562
+      }
+    },
+    {
+      "id": "p1_l4",
+      "box": {
+        "x1": 649,
+        "y1": 9,
+        "x2": 953,
+        "y2": 751
+      }
+    },
+    {
+      "id": "p1_l5",
+      "box": {
+        "x1": 77,
+        "y1": 603,
+        "x2": 196,
+        "y2": 1051
+      }
+    },
+    {
+      "id": "p1_l6",
+      "box": {
+        "x1": 243,
+        "y1": 583,
+        "x2": 449,
+        "y2": 1024
+      }
+    },
+    {
+      "id": "p1_l7",
+      "box": {
+        "x1": 481,
+        "y1": 621,
+        "x2": 670,
+        "y2": 1045
+      }
+    },
+    {
+      "id": "p1_l8",
+      "box": {
+        "x1": 697,
+        "y1": 803,
+        "x2": 959,
+        "y2": 1499
+      }
+    },
+    {
+      "id": "p1_l9",
+      "box": {
+        "x1": 93,
+        "y1": 1088,
+        "x2": 210,
+        "y2": 1583
+      }
+    },
+    {
+      "id": "p1_l10",
+      "box": {
+        "x1": 289,
+        "y1": 1083,
+        "x2": 391,
+        "y2": 1591
+      }
+    },
+    {
+      "id": "p1_l11",
+      "box": {
+        "x1": 471,
+        "y1": 1083,
+        "x2": 612,
+        "y2": 1579
+      }
     }
   ]
 }

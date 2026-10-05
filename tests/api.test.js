@@ -2,6 +2,7 @@ import { test, beforeEach } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { setClient } from "../lib/claude.js";
+import { MAX_PICTURES } from "../public/config.js";
 import { createMockClient } from "./mock-client.js";
 import inventoryHandler from "../api/inventory.js";
 import recommendHandler from "../api/recommend.js";
@@ -11,6 +12,8 @@ const fixture = (name) => JSON.parse(readFileSync(new URL(`./fixtures/${name}.js
 const PASS = "open-sesame";
 const QUIZ = { occasion: "casual outing", mood: "playful", weather: "hot and humid", time: "afternoon", priority: "comfort" };
 const PIXEL = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==";
+// A photo as the browser sends it. The size matches the collage the sample answer came from.
+const photo = (extra = {}) => ({ media_type: "image/jpeg", data: PIXEL, width: 1080, height: 1920, ...extra });
 
 function call(handler, { body, passcode = PASS, method = "POST" } = {}) {
   const req = { method, headers: passcode ? { "x-app-passcode": passcode } : {}, body };
@@ -37,7 +40,15 @@ test("every route refuses a wrong or missing passcode", async () => {
     assert.equal((await call(handler, { body: {}, passcode: "wrong" })).status, 401);
     assert.equal((await call(handler, { body: {}, passcode: null })).status, 401);
   }
-  assert.equal((await call(verifyHandler, { body: {} })).status, 204);
+  const ok = await call(verifyHandler, { body: {} });
+  assert.equal(ok.status, 200);
+});
+
+test("verify reports demo mode only while the fake client is in use", async () => {
+  setClient(createMockClient({ delayMs: 0 }));
+  assert.deepEqual((await call(verifyHandler, { body: {} })).body, { mock: true });
+  setClient({ messages: {} }); // stands in for the real client
+  assert.deepEqual((await call(verifyHandler, { body: {} })).body, { mock: false });
 });
 
 test("routes fail closed when APP_PASSCODE isn't set", async () => {
@@ -53,26 +64,33 @@ test("routes only accept POST", async () => {
 
 test("inventory validates photos", async () => {
   setClient(createMockClient({ delayMs: 0 }));
-  assert.equal((await call(inventoryHandler, { body: { images: [] } })).status, 400);
-  assert.equal((await call(inventoryHandler, { body: { images: [{ media_type: "image/bmp", data: PIXEL }] } })).status, 400);
-  assert.equal((await call(inventoryHandler, { body: { images: [{ media_type: "image/png", data: "not base64!" }] } })).status, 400);
-  const eleven = Array.from({ length: 11 }, () => ({ media_type: "image/png", data: PIXEL }));
-  assert.equal((await call(inventoryHandler, { body: { images: eleven } })).status, 400);
+  const status = async (images) => (await call(inventoryHandler, { body: { images } })).status;
+  assert.equal(await status([]), 400);
+  assert.equal(await status([photo({ media_type: "image/bmp" })]), 400);
+  assert.equal(await status([photo({ data: "not base64!" })]), 400);
+  assert.equal(await status([photo({ width: undefined })]), 400, "size is required for the look boxes");
+  assert.equal(await status([photo({ height: 0 })]), 400);
+  assert.equal(await status(Array.from({ length: MAX_PICTURES + 1 }, () => photo())), 400);
+  assert.equal(await status(Array.from({ length: MAX_PICTURES }, () => photo())), 200);
 });
 
 test("inventory sends labelled photos with the schema and returns clean items", async () => {
   const mock = createMockClient({ delayMs: 0 });
   setClient(mock);
   const res = await call(inventoryHandler, {
-    body: { images: [{ media_type: "image/png", data: PIXEL }, { media_type: "image/jpeg", data: PIXEL }] },
+    body: { images: [photo(), photo({ media_type: "image/png", width: 800, height: 600 })] },
   });
   assert.equal(res.status, 200);
   assert.equal(res.body.items.length, 22);
+  assert.equal(res.body.looks.length, 11);
+  assert.deepEqual(res.body.looks[5], { id: "p1_l6", box: { left: 0.225, top: 0.3036, right: 0.4157, bottom: 0.5333 } });
 
   const params = mock.calls[0];
   assert.equal(params.output_config.format.type, "json_schema");
+  assert.equal(params.max_tokens, 20_000, "the inventory call gets a higher output ceiling");
   assert.equal(params.messages[0].content.filter((b) => b.type === "image").length, 2);
-  assert.equal(params.messages[0].content[0].text, "Photo 1");
+  assert.equal(params.messages[0].content[0].text, "Photo 1 (1080 × 1920 pixels)");
+  assert.equal(params.messages[0].content[2].text, "Photo 2 (800 × 600 pixels)");
   assert.match(params.system, /catalog clothing/i);
 });
 
@@ -112,11 +130,13 @@ test("recommend retries once with the problems listed, then uses the fixed answe
   assert.equal(res.body.outfits.length, 3);
 });
 
-test("recommend returns 502 when both attempts are unusable", async () => {
+test("recommend returns no outfits, and says how many were skipped, when both attempts are unusable", async () => {
   const bad = { from_wardrobe: [{ name: "x", items: { top: "nope", bottom: null, one_piece: null, layer: null }, why: "", styling_tip: "" }], worth_looking_for: [] };
   setClient(createMockClient({ delayMs: 0, responses: [bad, bad] }));
   const res = await call(recommendHandler, { body: { quiz: QUIZ, items: fixture("inventory-response").items } });
-  assert.equal(res.status, 502);
+  assert.equal(res.status, 200);
+  assert.deepEqual(res.body.outfits, []);
+  assert.equal(res.body.skipped, 1);
 });
 
 test("recommend replaces ids that slip into the text", async () => {
@@ -138,7 +158,7 @@ test("recommend validates the quiz and the wardrobe", async () => {
 test("model errors come back as friendly messages", async () => {
   const overloaded = Object.assign(new Error("overloaded"), { status: 529 });
   setClient(createMockClient({ delayMs: 0, responses: [overloaded] }));
-  const res = await call(inventoryHandler, { body: { images: [{ media_type: "image/png", data: PIXEL }] } });
+  const res = await call(inventoryHandler, { body: { images: [photo()] } });
   assert.equal(res.status, 503);
   assert.match(res.body.error, /overloaded/);
 });

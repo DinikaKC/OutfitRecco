@@ -6,6 +6,7 @@ import {
   checkRecommendation,
   mergeDuplicates,
   normalizeInventory,
+  normalizeLooks,
   replaceIdsWithNames,
   sanitizeClientItems,
 } from "../lib/wardrobe.js";
@@ -16,6 +17,37 @@ const realInventory = JSON.parse(readFileSync(new URL("./fixtures/inventory-resp
 const item = (id, type, extra = {}) => ({
   id, name: `Item ${id}`, type, color: "", pattern: "", description: "",
   formality: 2, seen_in: [], possible_duplicate_of: null, keep_separate: false, ...extra,
+});
+
+test("normalizeLooks turns pixel boxes into fractions of the picture", () => {
+  const looks = normalizeLooks(realInventory.looks, [{ width: 1080, height: 1920 }]);
+  assert.equal(looks.length, 11);
+  assert.deepEqual(looks[0], {
+    id: "p1_l1",
+    box: { left: 0.0685, top: 0.062, right: 0.213, bottom: 0.2672 },
+  });
+});
+
+test("normalizeLooks clamps, fixes swapped corners and drops unusable boxes", () => {
+  const sizes = [{ width: 1000, height: 2000 }, { width: 500, height: 500 }];
+  const looks = normalizeLooks(
+    [
+      { id: "P1_L1", box: { x1: -50, y1: 100, x2: 400, y2: 2500 } }, // off the edges: clamped
+      { id: "p1_l2", box: { x1: 900, y1: 1800, x2: 500, y2: 1000 } }, // corners swapped: fixed
+      { id: "p1_l3", box: { x1: 10, y1: 10, x2: 12, y2: 12 } }, // too small: dropped
+      { id: "p3_l1", box: { x1: 0, y1: 0, x2: 10, y2: 10 } }, // photo 3 doesn't exist: dropped
+      { id: "p1_l1", box: { x1: 0, y1: 0, x2: 500, y2: 500 } }, // repeat: dropped
+      { id: "junk", box: { x1: 0, y1: 0, x2: 100, y2: 100 } }, // bad id: dropped
+      { id: "p2_l1", box: { x1: 0, y1: 0, x2: 250, y2: 500 } },
+    ],
+    sizes,
+  );
+  assert.deepEqual(looks, [
+    { id: "p1_l1", box: { left: 0, top: 0.05, right: 0.4, bottom: 1 } },
+    { id: "p1_l2", box: { left: 0.5, top: 0.5, right: 0.9, bottom: 0.9 } },
+    { id: "p2_l1", box: { left: 0, top: 0, right: 0.5, bottom: 1 } },
+  ]);
+  assert.deepEqual(normalizeLooks(undefined, sizes), []);
 });
 
 test("normalizeInventory keeps the real collage output intact", () => {

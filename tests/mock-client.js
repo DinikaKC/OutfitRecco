@@ -15,6 +15,7 @@ export function createMockClient({ delayMs = 1200, responses } = {}) {
   const queue = responses ? [...responses] : null;
 
   return {
+    isFake: true, // lets /api/verify tell the app it's in demo mode
     calls,
     messages: {
       async create(params) {

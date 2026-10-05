@@ -151,6 +151,94 @@ main {
   color: var(--madder);
   font-weight: 500;
   margin-top: 1rem;
+  white-space: pre-line; /* several problems are joined with line breaks */
+}
+
+/* Shown when the server runs with --mock: answers are samples, not from the user's photos. */
+.demo-banner {
+  max-width: calc(1040px + 32px);
+  margin: 0 auto;
+  padding: 0.7rem 16px;
+  background: var(--turmeric);
+  font-size: 0.95rem;
+}
+
+.demo-banner code {
+  white-space: nowrap;
+  font-size: 0.9em;
+  background: rgb(255 255 255 / 0.55);
+  padding: 0.05rem 0.3rem;
+  border-radius: 4px;
+}
+
+/* ---------- Piece pictures (cropped from the user's photos) ---------- */
+
+/* The frame. Its size comes from .thumb, .mini or .board-pic. */
+.pic {
+  position: relative;
+  display: block;
+  flex: none;
+  overflow: hidden;
+  border-radius: 6px;
+  background: var(--indigo-soft);
+}
+
+.pic img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Which part of the look to show: tops and layers the upper body, bottoms the lower body,
+   one-pieces the whole person. */
+.pic .fit-top {
+  object-position: 50% 18%; /* skip most of the head, show the torso */
+}
+
+.pic .fit-bottom {
+  object-position: 50% 100%;
+}
+
+.pic .fit-whole {
+  object-fit: contain;
+}
+
+/* No picture available (e.g. a piece you added by hand): show its name in the frame instead. */
+.pic-fallback {
+  display: none;
+}
+
+.pic.no-pic img {
+  display: none;
+}
+
+.pic.no-pic .pic-fallback {
+  display: grid;
+  place-items: center;
+  height: 100%;
+  padding: 0.4rem;
+  text-align: center;
+  font-size: 0.8rem;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--thread);
+}
+
+.pic.thumb {
+  width: 44px;
+  height: 58px;
+}
+
+.pic.mini {
+  width: 32px;
+  height: 42px;
+  border-radius: 4px;
+}
+
+.pic.thumb.no-pic .pic-fallback,
+.pic.mini.no-pic .pic-fallback {
+  display: none;
 }
 
 /* ---------- Buttons ---------- */
@@ -271,6 +359,23 @@ select:focus {
 
 .dropzone-hint {
   color: var(--thread);
+}
+
+.dropzone-formats {
+  margin-top: 0.4rem;
+  font-size: 0.85rem;
+  color: var(--thread);
+}
+
+.loading.small {
+  margin-top: 1rem;
+  gap: 0.6rem;
+}
+
+.loading.small .spinner {
+  width: 18px;
+  height: 18px;
+  border-width: 2px;
 }
 
 .thumbs {
@@ -442,7 +547,7 @@ select:focus {
 
 .piece-row {
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: auto auto 1fr auto;
   align-items: center;
   gap: 0.75rem;
 }
@@ -481,7 +586,6 @@ select:focus {
 .merged {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 0.75rem;
   flex-wrap: wrap;
   margin: 0.6rem 0 0 2.1rem;
@@ -490,6 +594,10 @@ select:focus {
   border-radius: 8px;
   font-size: 0.9rem;
   color: var(--thread);
+}
+
+.merged-text {
+  flex: 1 1 12rem;
 }
 
 .merged .btn {
@@ -596,6 +704,41 @@ select:focus {
   border-top: 1px solid var(--line);
 }
 
+/* The outfit board: one picture per piece, side by side. */
+.board {
+  display: grid;
+  grid-template-columns: repeat(var(--n, 2), minmax(0, 1fr));
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.board-piece {
+  position: relative;
+  margin: 0;
+}
+
+.pic.board-pic {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+}
+
+/* A single one-piece gets one tall frame, centred, rather than the full card width. */
+.board[style*="--n:1"] .board-piece {
+  width: 70%;
+  justify-self: center;
+}
+
+.board-piece figcaption {
+  position: absolute;
+  left: 6px;
+  bottom: 6px;
+  padding: 0 0.5rem;
+  border-radius: 999px;
+  background: var(--cotton);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
 .outfit-pieces li {
   display: grid;
   grid-template-columns: 5.2rem 1fr;
@@ -611,18 +754,7 @@ select:focus {
 }
 
 .outfit-pieces .piece-label {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
   font-weight: 600;
-}
-
-.outfit-pieces img {
-  width: 38px;
-  height: 50px;
-  object-fit: cover;
-  border-radius: 5px;
-  flex: none;
 }
 
 .outfit-pieces .where {
@@ -698,6 +830,12 @@ select:focus {
 .idea dd {
   margin: 0;
   font-weight: 600;
+}
+
+.idea dd.with-pic {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
 }
 
 .search-links {
